@@ -31,11 +31,12 @@ jobs:
         run: npm ci
       # Runs a set of commands to build
       - name: Build
-        run: npm run build:ci
-      # store the artifact
-      - name: Archive build
-        if: success()
-        uses: actions/upload-artifact@v1
-        with:
-          name: deploy_dist
-          path: dist
+        run: npm run build --prod
+      # Deploy
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@releases/v2
+        env:
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          BASE_BRANCH: master
+          BRANCH: gh-pages
+          FOLDER: dist/przepisy
